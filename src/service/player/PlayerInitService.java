@@ -1,6 +1,8 @@
 package service.player;
 
 import domain.player.Player;
+import domain.player.Position;
+import domain.player.Team;
 import domain.player.defender.CenterBack;
 import domain.player.defender.FullBack;
 import domain.player.forward.Striker;
@@ -10,43 +12,43 @@ import domain.player.midfielder.CentralMidFielder;
 import domain.player.midfielder.DefensiveMidFielder;
 
 public class PlayerInitService {
-    public Player playerInit(String name, int teamNumber, int positionNumber) {
+    public Player playerInit(String name, Team team, Position position) {
         String teamName;
 
-        switch (teamNumber) {
-            case 1:
+        switch (team) {
+            case ARSENAL:
                 teamName = "아스날";
                 break;
-            case 2:
+            case LIVERPOOL:
                 teamName = "리버풀";
                 break;
-            case 3:
+            case MANCITY:
                 teamName = "맨시티";
                 break;
-            case 4:
+            case CHELSEA:
                 teamName = "첼시";
                 break;
-            case 5:
+            case TOTTENHAM:
                 teamName = "토트넘";
                 break;
-            default:
+            default: // MANUNITED
                 teamName = "맨유";
         }
 
-        switch (positionNumber) {
-            case 1:
+        switch (position) {
+            case STIKER:
                 return new Striker(name, teamName);
-            case 2:
+            case WINGER:
                 return new Winger(name, teamName);
-            case 3:
+            case ATTACKING_MIDFIELDER:
                 return new AttackingMidFielder(name, teamName);
-            case 4:
+            case CENTRAL_MIDFIELDER:
                 return new CentralMidFielder(name, teamName);
-            case 5:
+            case DEFENSIVE_MIDFIELDER:
                 return new DefensiveMidFielder(name, teamName);
-            case 6:
+            case FULLBACK:
                 return new FullBack(name, teamName);
-            default:
+            default: // CENTERBACK
                 return new CenterBack(name, teamName);
         }
     }

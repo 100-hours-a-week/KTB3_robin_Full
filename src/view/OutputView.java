@@ -25,7 +25,7 @@ public class OutputView {
         System.out.println(GameMessages.chooseYourPosition);
     }
 
-    public void printBeforeMatch(String name, String teamName) throws InterruptedException {
+    public void printBeforeMatch(String name, String teamName) {
         sb.append(name)
             .append(" 은(는) ")
             .append(teamName)
@@ -34,7 +34,12 @@ public class OutputView {
 
         System.out.println(sb);
         sb.setLength(0);
-        Thread.sleep(5000);
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException();
+        }
     }
 
     public void printOneVoneChanceSituation(String name, String teamName) {

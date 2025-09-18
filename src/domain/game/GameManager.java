@@ -2,6 +2,8 @@ package domain.game;
 
 import domain.message.ErrorMessages;
 import domain.message.GameMessages;
+import domain.player.Position;
+import domain.player.Team;
 import domain.validation.InputValidator;
 import domain.player.Player;
 import service.MappingService;
@@ -44,7 +46,7 @@ public class GameManager {
         this.randomNumberService = randomNumberService;
     }
 
-    public void startGame() throws InterruptedException {
+    public void startGame() {
         if (!initPlayer()) {
             return;
         }
@@ -53,7 +55,7 @@ public class GameManager {
     }
 
     // 선수 등록 및 초기화 (이름, 구단, 포지션, 능력치)
-    private boolean initPlayer() throws InterruptedException {
+    private boolean initPlayer() {
 
         outView.printWelcomeMessage();
 
@@ -75,19 +77,21 @@ public class GameManager {
             return false;
         }
 
-        player = playerInitService.playerInit(name, teamNumber, positionNumber);
+        Team team = mappingService.getTeamEnumValue(teamNumber);
+        Position position = mappingService.getPositionEnumValue(positionNumber);
+        player = playerInitService.playerInit(name, team, position);
         outView.printBeforeMatch(player.getName(), player.getTeamName());
         return true;
     }
 
     // 게임 진행
-    private void startMatch() throws InterruptedException {
+    private void startMatch() {
 
         for (int i = 0; i < 4; i++) {
-            int number = randomNumberService.oneToFour(); // 게임 상황 4 가지를 숫자로 리턴
-            ArrayList<Integer> availableActionNumbers = new ArrayList<>();
+            int situationNumber = randomNumberService.oneToFour(); // 게임 상황 4 가지를 숫자로 리턴
+            ArrayList<Integer> availableActionNumbers;
 
-            switch (number) { // number 에 맞게 상황 설명을 view 에서 출력
+            switch (situationNumber) { // number 에 맞게 상황 설명을 view 에서 출력
                 case 1:
                     outView.printOneVoneChanceSituation(player.getName(), player.getTeamName());
                     break;
@@ -101,7 +105,7 @@ public class GameManager {
                     outView.printDefendSituation(player.getName(), player.getTeamName());
             }
             // 각 역할군에 맞게 할 수 있는 행동들 나열
-            availableActionNumbers = playerActionService.getAvailableActionNumbers(player, number);
+            availableActionNumbers = playerActionService.getAvailableActionNumbers(player, situationNumber);
             // 행동의 결과를 결과표에 기록
             outView.printAvailableActions(availableActionNumbers, mappingService);
             handleActionInputLoop(availableActionNumbers, inputValidator, mappingService, playerActionService);
@@ -118,7 +122,7 @@ public class GameManager {
     private void handleActionInputLoop(ArrayList<Integer> availableActionNumbers,
                                        InputValidator inputValidator,
                                        MappingService mappingService,
-                                       PlayerActionService playerActionService) throws InterruptedException {
+                                       PlayerActionService playerActionService) {
         while (true) {
             System.out.print(GameMessages.askActionNumber);
             int chosenNumber = inView.getActionToTake();
@@ -139,6 +143,10 @@ public class GameManager {
                 System.out.println(ErrorMessages.actionInputRetry);
             }
         }
-        Thread.sleep(1000);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

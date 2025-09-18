@@ -1,16 +1,43 @@
 package domain;
 
+import domain.player.Position;
+import domain.player.Team;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class MappingData {
+    // 숫자-팀 엔트리 저장
+    private final HashMap<Integer, Team> teamByNumberMap;
+    // 숫자-포지션 엔트리 저장
+    private final HashMap<Integer, Position> positionByNumberMap;
     // 행동마다 숫자-문자열로 매핑
-    HashMap<Integer, String> actionByNumberMap = new HashMap<>();
+    private final HashMap<Integer, String> actionByNumberMap;
     // 역할군-할수있는 행동 번호 list 매핑
-    HashMap<String, ArrayList<Integer>> actionsByPositionMap = new HashMap<>();
+    private final HashMap<String, ArrayList<Integer>> actionsByPositionMap;
 
     public MappingData() {
+        teamByNumberMap = new HashMap<>();
+        positionByNumberMap = new HashMap<>();
+        actionByNumberMap = new HashMap<>();
+        actionsByPositionMap = new HashMap<>();
+
+        teamByNumberMap.put(1, Team.ARSENAL);
+        teamByNumberMap.put(2, Team.LIVERPOOL);
+        teamByNumberMap.put(3, Team.MANCITY);
+        teamByNumberMap.put(4, Team.CHELSEA);
+        teamByNumberMap.put(5, Team.TOTTENHAM);
+        teamByNumberMap.put(6, Team.MANUNITED);
+
+        positionByNumberMap.put(1, Position.STIKER);
+        positionByNumberMap.put(2, Position.WINGER);
+        positionByNumberMap.put(3, Position.ATTACKING_MIDFIELDER);
+        positionByNumberMap.put(4, Position.CENTRAL_MIDFIELDER);
+        positionByNumberMap.put(5, Position.DEFENSIVE_MIDFIELDER);
+        positionByNumberMap.put(6, Position.FULLBACK);
+        positionByNumberMap.put(7, Position.CENTERBACK);
+
         // 1~4 : 전 포지션 공통
         actionByNumberMap.put(1, "패스");
         actionByNumberMap.put(2, "슈팅");
@@ -37,8 +64,7 @@ public class MappingData {
         // 14 : 센터백
         actionByNumberMap.put(14, "강력한 몸싸움");
 
-
-        // 전 포지션 기본 동작(1~4)
+        // 전 포지션 기본 동작 번호 리스트(1~4)
         List<Integer> baseActions = List.of(1, 2, 3, 4);
         actionsByPositionMap.put("Winger", new ArrayList<>(baseActions));
         actionsByPositionMap.put("Striker", new ArrayList<>(baseActions));
@@ -71,6 +97,12 @@ public class MappingData {
         actionsByPositionMap.get("CenterBack").add(14);
     }
 
+    public Team getTeamEnumValue(int teamNumber) {
+        return teamByNumberMap.get(teamNumber);
+    }
+    public Position getPositionEnumValue(int positionNumber) {
+        return positionByNumberMap.get(positionNumber);
+    }
     public String getActionName(int actionNumber) {
         return actionByNumberMap.get(actionNumber);
     }

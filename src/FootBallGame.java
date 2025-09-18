@@ -8,7 +8,7 @@ import view.InputView;
 import view.OutputView;
 
 public class FootBallGame {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         GameManager gm = new GameManager(
             new InputView(),
             new OutputView(),
