@@ -46,7 +46,7 @@ public class MappingData {
         // 5 : 공격수
         actionByNumberMap.put(5, "침착한 슛");
         // 6 : 미드필더
-        actionByNumberMap.put(6, "정교한 패스");
+        actionByNumberMap.put(6, "정확한 패스");
         // 7 : 수비수
         actionByNumberMap.put(7, "침착한 태클");
         // 8 : 윙어
