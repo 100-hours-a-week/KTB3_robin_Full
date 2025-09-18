@@ -14,11 +14,35 @@ import view.OutputView;
 import java.util.ArrayList;
 
 
-public class GameManager  {
+public class GameManager {
 
-    static Player player;
-    static InputView inView = new InputView();
-    static OutputView outView = new OutputView();
+    private final InputView inView;
+    private final OutputView outView;
+    private final InputValidator inputValidator;
+    private final MappingService mappingService;
+    private final PlayerInitService playerInitService;
+    private final PlayerActionService playerActionService;
+    private final RandomNumberService randomNumberService;
+
+    private Player player;
+
+    public GameManager(
+        InputView inView,
+        OutputView outView,
+        InputValidator inputValidator,
+        MappingService mappingService,
+        PlayerInitService playerInitService,
+        PlayerActionService playerActionService,
+        RandomNumberService randomNumberService) {
+
+        this.inView = inView;
+        this.outView = outView;
+        this.inputValidator = inputValidator;
+        this.mappingService = mappingService;
+        this.playerInitService = playerInitService;
+        this.playerActionService = playerActionService;
+        this.randomNumberService = randomNumberService;
+    }
 
     public void startGame() throws InterruptedException {
         if (!initPlayer()) {
@@ -30,7 +54,6 @@ public class GameManager  {
 
     // 선수 등록 및 초기화 (이름, 구단, 포지션, 능력치)
     private boolean initPlayer() throws InterruptedException {
-        InputValidator inputValidator = new InputValidator();
 
         outView.printWelcomeMessage();
 
@@ -52,7 +75,6 @@ public class GameManager  {
             return false;
         }
 
-        PlayerInitService playerInitService = new PlayerInitService();
         player = playerInitService.playerInit(name, teamNumber, positionNumber);
         outView.printBeforeMatch(player.getName(), player.getTeamName());
         return true;
@@ -60,10 +82,6 @@ public class GameManager  {
 
     // 게임 진행
     private void startMatch() throws InterruptedException {
-        MappingService mappingService = new MappingService();
-        RandomNumberService randomNumberService = new RandomNumberService();
-        PlayerActionService playerActionService = new PlayerActionService();
-        InputValidator inputValidator = new InputValidator();
 
         for (int i = 0; i < 4; i++) {
             int number = randomNumberService.oneToFour(); // 게임 상황 4 가지를 숫자로 리턴
