@@ -81,6 +81,11 @@ public class PlayerActionService {
                     return ((Forward) player).shootWithCalm();
                 }
                 break;
+            case 6: // 정확한 패스 (MidFielder)
+                if (player instanceof MidFielder) {
+                    return ((MidFielder) player).shortPassWithAccuracy();
+                }
+                break;
             case 7: // 침착한 태클 (Defender)
                 if (player instanceof Defender) {
                     return ((Defender) player).tackleWithAccuracy();
