@@ -4,7 +4,9 @@ import domain.MappingData;
 import domain.player.Position;
 import domain.player.Team;
 
-public class MappingService {
+import java.util.HashSet;
+
+public class MappingDataService {
     private final MappingData mappingData = new MappingData();
 
     public Team getTeamEnumValue(int teamNumber) {
@@ -15,5 +17,11 @@ public class MappingService {
     }
     public String getActionName(int actionNumber) {
         return mappingData.getActionName(actionNumber);
+    }
+    public HashSet<Integer> getAvailableActionNumbersBySituation(int situationNumber) {
+        return mappingData.getActionNumbersBySituation(situationNumber);
+    }
+    public HashSet<Integer> getAvailableActionNumbersByPosition(String position) {
+        return mappingData.getActionNumbersByPosition(position);
     }
 }

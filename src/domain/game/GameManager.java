@@ -6,7 +6,7 @@ import domain.player.Position;
 import domain.player.Team;
 import domain.validation.InputValidator;
 import domain.player.Player;
-import service.MappingService;
+import service.MappingDataService;
 import service.RandomNumberService;
 import service.player.PlayerInitService;
 import service.player.PlayerActionService;
@@ -21,7 +21,7 @@ public class GameManager {
     private final InputView inView;
     private final OutputView outView;
     private final InputValidator inputValidator;
-    private final MappingService mappingService;
+    private final MappingDataService mappingDataService;
     private final PlayerInitService playerInitService;
     private final PlayerActionService playerActionService;
     private final RandomNumberService randomNumberService;
@@ -32,7 +32,7 @@ public class GameManager {
         InputView inView,
         OutputView outView,
         InputValidator inputValidator,
-        MappingService mappingService,
+        MappingDataService mappingDataService,
         PlayerInitService playerInitService,
         PlayerActionService playerActionService,
         RandomNumberService randomNumberService) {
@@ -40,7 +40,7 @@ public class GameManager {
         this.inView = inView;
         this.outView = outView;
         this.inputValidator = inputValidator;
-        this.mappingService = mappingService;
+        this.mappingDataService = mappingDataService;
         this.playerInitService = playerInitService;
         this.playerActionService = playerActionService;
         this.randomNumberService = randomNumberService;
@@ -77,8 +77,8 @@ public class GameManager {
             return false;
         }
 
-        Team team = mappingService.getTeamEnumValue(teamNumber);
-        Position position = mappingService.getPositionEnumValue(positionNumber);
+        Team team = mappingDataService.getTeamEnumValue(teamNumber);
+        Position position = mappingDataService.getPositionEnumValue(positionNumber);
         player = playerInitService.playerInit(name, team, position);
         outView.printBeforeMatch(player.getName(), player.getTeamName());
         return true;
@@ -107,8 +107,8 @@ public class GameManager {
             // 각 역할군에 맞게 할 수 있는 행동들 나열
             availableActionNumbers = playerActionService.getAvailableActionNumbers(player, situationNumber);
             // 행동의 결과를 결과표에 기록
-            outView.printAvailableActions(availableActionNumbers, mappingService);
-            handleActionInputLoop(availableActionNumbers, inputValidator, mappingService, playerActionService);
+            outView.printAvailableActions(availableActionNumbers, mappingDataService);
+            handleActionInputLoop(availableActionNumbers, inputValidator, mappingDataService, playerActionService);
         }
     }
 
@@ -121,7 +121,7 @@ public class GameManager {
     // 올바른 행동 번호가 들어올 때까지 반복하고, 성공 시
     private void handleActionInputLoop(ArrayList<Integer> availableActionNumbers,
                                        InputValidator inputValidator,
-                                       MappingService mappingService,
+                                       MappingDataService mappingDataService,
                                        PlayerActionService playerActionService) {
         while (true) {
             System.out.print(GameMessages.askActionNumber);
@@ -129,7 +129,7 @@ public class GameManager {
 
             if (inputValidator.actionValidator(chosenNumber, availableActionNumbers)) {
                 int result = playerActionService.execute(player, chosenNumber);
-                String actionName = mappingService.getActionName(chosenNumber);
+                String actionName = mappingDataService.getActionName(chosenNumber);
 
                 // 제대로 구현된 성공/실패 로직이 있었다면, 아래의 코드가 필요함
                 if (result == 1) {

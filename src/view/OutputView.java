@@ -1,7 +1,7 @@
 package view;
 
 import domain.message.GameMessages;
-import service.MappingService;
+import service.MappingDataService;
 
 import java.util.List;
 
@@ -86,10 +86,10 @@ public class OutputView {
     }
 
     // 가능한 행동 목록 출력
-    public void printAvailableActions(List<Integer> actionNumbers, MappingService mappingService) {
+    public void printAvailableActions(List<Integer> actionNumbers, MappingDataService mappingDataService) {
         sb.append("가능한 행동들:\n");
         for (int actionNum : actionNumbers) {
-            String name = mappingService.getActionName(actionNum);
+            String name = mappingDataService.getActionName(actionNum);
             sb.append(actionNum)
                 .append(" : ")
                 .append(name)
