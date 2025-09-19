@@ -6,6 +6,7 @@ import domain.player.Team;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class MappingData {
     // 숫자-팀 엔트리 저장
@@ -14,14 +15,17 @@ public class MappingData {
     private final HashMap<Integer, Position> positionByNumberMap;
     // 행동마다 숫자-문자열로 매핑
     private final HashMap<Integer, String> actionByNumberMap;
-    // 역할군-할수있는 행동 번호 list 매핑
+    // 역할군-가능행동 번호 list 매핑
     private final HashMap<String, ArrayList<Integer>> actionsByPositionMap;
+    // 상황-가능행동 번호 list 매핑
+    private final HashMap<Integer, ArrayList<Integer>> actionBySituation;
 
     public MappingData() {
         teamByNumberMap = new HashMap<>();
         positionByNumberMap = new HashMap<>();
         actionByNumberMap = new HashMap<>();
         actionsByPositionMap = new HashMap<>();
+        actionBySituation = new HashMap<>();
 
         teamByNumberMap.put(1, Team.ARSENAL);
         teamByNumberMap.put(2, Team.LIVERPOOL);
@@ -95,6 +99,38 @@ public class MappingData {
 
         actionsByPositionMap.get("CenterBack").add(7);
         actionsByPositionMap.get("CenterBack").add(14);
+
+        // 각 상황마다 할 수 있는 행동 매핑
+        actionBySituation.put(1, new ArrayList<>()); // 골키퍼 1:1
+        actionBySituation.put(2, new ArrayList<>()); // 박스 근처
+        actionBySituation.put(3, new ArrayList<>()); // 역습
+        actionBySituation.put(4, new ArrayList<>()); // 수비 상황
+
+        ArrayList<Integer> actionList = actionsByPositionMap.get(1);
+        actionList.add(2); // 슈팅
+        actionList.add(5); // 침착한 슛
+
+        actionList =  actionsByPositionMap.get(2);
+        actionList.add(1); // 패스
+        actionList.add(2); // 슈팅
+
+        actionList.add(5); // 침착한 슛
+        actionList.add(8); // 개인기 돌파
+        actionList.add(9); // 무회전 슛
+
+        actionList.add(6); // 정확한 패스
+        actionList.add(10); // 감아차기
+
+        actionList = actionsByPositionMap.get(3);
+        actionList.add(1); // 패스
+        actionList.add(11); // 대지를 가르는 패스
+        actionList.add(13); // 패스 앤 무브
+
+        actionList = actionsByPositionMap.get(4);
+        actionList.add(3); // 태클
+        actionList.add(12); // 볼 리커버리
+        actionList.add(7); // 침착한 태클
+        actionList.add(14); // 강력한 몸싸움
     }
 
     public Team getTeamEnumValue(int teamNumber) {
