@@ -103,11 +103,11 @@ public class MappingData {
         actionBySituation.put(3, new ArrayList<>()); // 역습
         actionBySituation.put(4, new ArrayList<>()); // 수비 상황
 
-        ArrayList<Integer> actionList = actionsByPositionMap.get(1);
+        ArrayList<Integer> actionList = actionBySituation.get(1);
         actionList.add(2); // 슈팅
         actionList.add(5); // 침착한 슛
 
-        actionList = actionsByPositionMap.get(2);
+        actionList = actionBySituation.get(2);
         actionList.add(1); // 패스
         actionList.add(2); // 슈팅
 
@@ -118,12 +118,12 @@ public class MappingData {
         actionList.add(6); // 정확한 패스
         actionList.add(10); // 감아차기
 
-        actionList = actionsByPositionMap.get(3);
+        actionList = actionBySituation.get(3);
         actionList.add(1); // 패스
         actionList.add(11); // 대지를 가르는 패스
         actionList.add(13); // 패스 앤 무브
 
-        actionList = actionsByPositionMap.get(4);
+        actionList = actionBySituation.get(4);
         actionList.add(3); // 태클
         actionList.add(12); // 볼 리커버리
         actionList.add(7); // 침착한 태클
