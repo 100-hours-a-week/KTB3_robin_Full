@@ -139,4 +139,12 @@ public class MappingData {
     public String getActionName(int actionNumber) {
         return actionsByNumberMap.get(actionNumber);
     }
+    public HashSet<Integer> getActionNumbersBySituation(int situationNumber) {
+        List<Integer> actionNumberList = actionBySituation.get(situationNumber);
+        return new HashSet<>(actionNumberList);
+    }
+    public HashSet<Integer> getActionNumbersByPosition(Position position) {
+        List<Integer> actionNumberList = actionsByPositionMap.get(position);
+        return new HashSet<>(actionNumberList);
+    }
 }

@@ -1,6 +1,7 @@
 package service.player;
 
 import domain.player.Player;
+import domain.player.Position;
 import domain.player.midfielder.AttackingMidFielder;
 import domain.player.midfielder.CentralMidFielder;
 import domain.player.midfielder.DefensiveMidFielder;
@@ -11,56 +12,28 @@ import domain.player.defender.FullBack;
 import domain.player.forward.Forward;
 import domain.player.forward.Striker;
 import domain.player.forward.Winger;
+import service.MappingDataService;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class PlayerActionService {
 
-    // 플레이어의 포지션에서 할 수 있는 행동 번호 list를 출력
-    public ArrayList<Integer> getAvailableActionNumbers(Player player, int situationNumber) {
-        ArrayList<Integer> actions = new ArrayList<>();
+    private final MappingDataService mappingDataService;
 
-        boolean isForward = player instanceof Forward;
-        boolean isWinger = player instanceof Winger;
-        boolean isStriker = player instanceof Striker;
+    public PlayerActionService(MappingDataService mappingDataService) {
+        this.mappingDataService = mappingDataService;
+    }
 
-        boolean isMid = player instanceof MidFielder;
-        boolean isAM = player instanceof AttackingMidFielder;
-        boolean isCM = player instanceof CentralMidFielder;
-        boolean isDM = player instanceof DefensiveMidFielder;
-
-        boolean isDefender = player instanceof Defender;
-        boolean isCB = player instanceof CenterBack;
-        boolean isFB = player instanceof FullBack;
-
-        switch (situationNumber) {
-            case 1: // 골키퍼 1:1
-                actions.add(2); // 슈팅
-                if (isForward) actions.add(5); // 침착한 슛
-                break;
-            case 2: // 박스 근처
-                actions.add(1); // 패스
-                actions.add(2); // 슈팅
-                if (isForward) actions.add(5); // 침착한 슛
-                if (isWinger) actions.add(8); // 개인기 돌파
-                if (isStriker) actions.add(9); // 무회전 슛
-                if (isMid) actions.add(6); // 정교한 패스
-                if (isAM) actions.add(10); // 감아차기
-                break;
-            case 3: // 역습
-                actions.add(1); // 패스
-                if (isCM) actions.add(11); // 대지를 가르는 패스
-                if (isFB) actions.add(13); // 패스 앤 무브
-                break;
-            case 4: // 수비 상황
-            default:
-                actions.add(3); // 태클
-                if (isDM) actions.add(12);     // 볼 리커버리
-                if (isDefender) actions.add(7); // 침착한 태클
-                if (isCB) actions.add(14);     // 강력한 몸싸움
-                break;
-        }
-        return actions;
+    // 포지션과 상황을 모두 고려했을 때 취할 수 있는 행동 번호 집합 생성
+    public ArrayList<Integer> getAvailableActionNumbers(Position position, int situationNumber) {
+        // 상황만 따졌을 때 취할 수 있는 행동 번호 집합
+        HashSet<Integer> setBySituation = mappingDataService.getAvailableActionNumbersBySituation(situationNumber);
+        // 포지션만 따졌을 때 취할 수 있는 행동 번호 집합
+        HashSet<Integer> setByPosition = mappingDataService.getAvailableActionNumbersByPosition(position);
+        setBySituation.retainAll(setByPosition);  // setBySituation 을 두 집합의 교집합으로 만들기
+        ArrayList<Integer> actionNumberSet = new ArrayList<>(setBySituation);
+        return new ArrayList<>(actionNumberSet);
     }
 
     // 원래 Player 계열 클래스들에 각 능력치를 토대로 확률을 계산하는 로직이 있어야하나,
@@ -129,6 +102,6 @@ public class PlayerActionService {
             default:
                 break;
         }
-        return -1;
+        return -1; // 할 수 없는 행동 입력 시 -1 리턴
     }
 }

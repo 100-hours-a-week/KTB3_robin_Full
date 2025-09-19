@@ -15,7 +15,7 @@ public class FootBallGame {
             new InputValidator(),
             new MappingDataService(),
             new PlayerInitService(),
-            new PlayerActionService(),
+            new PlayerActionService(new MappingDataService()),
             new RandomNumberService()
         );
         gm.startGame();

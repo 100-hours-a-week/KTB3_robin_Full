@@ -105,7 +105,7 @@ public class GameManager {
                     outView.printDefendSituation(player.getName(), player.getTeamName());
             }
             // 각 역할군에 맞게 할 수 있는 행동들 나열
-            availableActionNumbers = playerActionService.getAvailableActionNumbers(player, situationNumber);
+            availableActionNumbers = playerActionService.getAvailableActionNumbers(player.getPosition(), situationNumber);
             // 행동의 결과를 결과표에 기록
             outView.printAvailableActions(availableActionNumbers, mappingDataService);
             handleActionInputLoop(availableActionNumbers, inputValidator, mappingDataService, playerActionService);

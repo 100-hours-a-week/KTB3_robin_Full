@@ -21,7 +21,7 @@ public class MappingDataService {
     public HashSet<Integer> getAvailableActionNumbersBySituation(int situationNumber) {
         return mappingData.getActionNumbersBySituation(situationNumber);
     }
-    public HashSet<Integer> getAvailableActionNumbersByPosition(String position) {
+    public HashSet<Integer> getAvailableActionNumbersByPosition(Position position) {
         return mappingData.getActionNumbersByPosition(position);
     }
 }
