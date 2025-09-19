@@ -1,6 +1,6 @@
 import domain.game.GameManager;
 import domain.validation.InputValidator;
-import service.MappingService;
+import service.MappingDataService;
 import service.RandomNumberService;
 import service.player.PlayerActionService;
 import service.player.PlayerInitService;
@@ -13,7 +13,7 @@ public class FootBallGame {
             new InputView(),
             new OutputView(),
             new InputValidator(),
-            new MappingService(),
+            new MappingDataService(),
             new PlayerInitService(),
             new PlayerActionService(),
             new RandomNumberService()
