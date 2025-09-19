@@ -3,10 +3,7 @@ package domain;
 import domain.player.Position;
 import domain.player.Team;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class MappingData {
     // 숫자-팀 엔트리 저장
@@ -14,16 +11,16 @@ public class MappingData {
     // 숫자-포지션 엔트리 저장
     private final HashMap<Integer, Position> positionByNumberMap;
     // 행동마다 숫자-문자열로 매핑
-    private final HashMap<Integer, String> actionByNumberMap;
+    private final HashMap<Integer, String> actionsByNumberMap;
     // 역할군-가능행동 번호 list 매핑
-    private final HashMap<String, ArrayList<Integer>> actionsByPositionMap;
+    private final HashMap<Position, ArrayList<Integer>> actionsByPositionMap;
     // 상황-가능행동 번호 list 매핑
     private final HashMap<Integer, ArrayList<Integer>> actionBySituation;
 
     public MappingData() {
         teamByNumberMap = new HashMap<>();
         positionByNumberMap = new HashMap<>();
-        actionByNumberMap = new HashMap<>();
+        actionsByNumberMap = new HashMap<>();
         actionsByPositionMap = new HashMap<>();
         actionBySituation = new HashMap<>();
 
@@ -43,62 +40,62 @@ public class MappingData {
         positionByNumberMap.put(7, Position.CENTERBACK);
 
         // 1~4 : 전 포지션 공통
-        actionByNumberMap.put(1, "패스");
-        actionByNumberMap.put(2, "슈팅");
-        actionByNumberMap.put(3, "태클");
-        actionByNumberMap.put(4, "드리블 돌파");
+        actionsByNumberMap.put(1, "패스");
+        actionsByNumberMap.put(2, "슈팅");
+        actionsByNumberMap.put(3, "태클");
+        actionsByNumberMap.put(4, "드리블 돌파");
         // 5 : 공격수
-        actionByNumberMap.put(5, "침착한 슛");
+        actionsByNumberMap.put(5, "침착한 슛");
         // 6 : 미드필더
-        actionByNumberMap.put(6, "정확한 패스");
+        actionsByNumberMap.put(6, "정확한 패스");
         // 7 : 수비수
-        actionByNumberMap.put(7, "침착한 태클");
+        actionsByNumberMap.put(7, "침착한 태클");
         // 8 : 윙어
-        actionByNumberMap.put(8, "개인기 돌파");
+        actionsByNumberMap.put(8, "개인기 돌파");
         // 9 : 스트라이커
-        actionByNumberMap.put(9, "무회전 슛");
+        actionsByNumberMap.put(9, "무회전 슛");
         // 10 : 공격형 미드필더
-        actionByNumberMap.put(10, "감아차기");
+        actionsByNumberMap.put(10, "감아차기");
         // 11 : 중앙 미드필더
-        actionByNumberMap.put(11, "대지를 가르는 패스");
+        actionsByNumberMap.put(11, "대지를 가르는 패스");
         // 12 : 수비형 미드필더
-        actionByNumberMap.put(12, "볼 리커버리");
+        actionsByNumberMap.put(12, "볼 리커버리");
         // 13 : 풀백 
-        actionByNumberMap.put(13, "패스 앤 무브");
+        actionsByNumberMap.put(13, "패스 앤 무브");
         // 14 : 센터백
-        actionByNumberMap.put(14, "강력한 몸싸움");
+        actionsByNumberMap.put(14, "강력한 몸싸움");
 
         // 전 포지션 기본 동작 번호 리스트(1~4)
         List<Integer> baseActions = List.of(1, 2, 3, 4);
-        actionsByPositionMap.put("Winger", new ArrayList<>(baseActions));
-        actionsByPositionMap.put("Striker", new ArrayList<>(baseActions));
-        actionsByPositionMap.put("AttackingMidFielder", new ArrayList<>(baseActions));
-        actionsByPositionMap.put("CentralMidFielder", new ArrayList<>(baseActions));
-        actionsByPositionMap.put("DefensiveMidFielder", new ArrayList<>(baseActions));
-        actionsByPositionMap.put("FullBack", new ArrayList<>(baseActions));
-        actionsByPositionMap.put("CenterBack", new ArrayList<>(baseActions));
+        actionsByPositionMap.put(Position.WINGER, new ArrayList<>(baseActions));
+        actionsByPositionMap.put(Position.STIKER, new ArrayList<>(baseActions));
+        actionsByPositionMap.put(Position.ATTACKING_MIDFIELDER, new ArrayList<>(baseActions));
+        actionsByPositionMap.put(Position.CENTRAL_MIDFIELDER, new ArrayList<>(baseActions));
+        actionsByPositionMap.put(Position.DEFENSIVE_MIDFIELDER, new ArrayList<>(baseActions));
+        actionsByPositionMap.put(Position.FULLBACK, new ArrayList<>(baseActions));
+        actionsByPositionMap.put(Position.CENTERBACK, new ArrayList<>(baseActions));
 
         // 각 포지션 마다 할 수 있는 동작
-        actionsByPositionMap.get("Winger").add(5);
-        actionsByPositionMap.get("Winger").add(8);
+        actionsByPositionMap.get(Position.WINGER).add(5);
+        actionsByPositionMap.get(Position.WINGER).add(8);
 
-        actionsByPositionMap.get("Striker").add(5);
-        actionsByPositionMap.get("Striker").add(9);
+        actionsByPositionMap.get(Position.STIKER).add(5);
+        actionsByPositionMap.get(Position.STIKER).add(9);
 
-        actionsByPositionMap.get("AttackingMidFielder").add(6);
-        actionsByPositionMap.get("AttackingMidFielder").add(10);
+        actionsByPositionMap.get(Position.ATTACKING_MIDFIELDER).add(6);
+        actionsByPositionMap.get(Position.ATTACKING_MIDFIELDER).add(10);
 
-        actionsByPositionMap.get("CentralMidFielder").add(6);
-        actionsByPositionMap.get("CentralMidFielder").add(11);
+        actionsByPositionMap.get(Position.CENTRAL_MIDFIELDER).add(6);
+        actionsByPositionMap.get(Position.CENTRAL_MIDFIELDER).add(11);
 
-        actionsByPositionMap.get("DefensiveMidFielder").add(6);
-        actionsByPositionMap.get("DefensiveMidFielder").add(12);
+        actionsByPositionMap.get(Position.DEFENSIVE_MIDFIELDER).add(6);
+        actionsByPositionMap.get(Position.DEFENSIVE_MIDFIELDER).add(12);
 
-        actionsByPositionMap.get("FullBack").add(7);
-        actionsByPositionMap.get("FullBack").add(13);
+        actionsByPositionMap.get(Position.FULLBACK).add(7);
+        actionsByPositionMap.get(Position.FULLBACK).add(13);
 
-        actionsByPositionMap.get("CenterBack").add(7);
-        actionsByPositionMap.get("CenterBack").add(14);
+        actionsByPositionMap.get(Position.CENTERBACK).add(7);
+        actionsByPositionMap.get(Position.CENTERBACK).add(14);
 
         // 각 상황마다 할 수 있는 행동 매핑
         actionBySituation.put(1, new ArrayList<>()); // 골키퍼 1:1
@@ -110,7 +107,7 @@ public class MappingData {
         actionList.add(2); // 슈팅
         actionList.add(5); // 침착한 슛
 
-        actionList =  actionsByPositionMap.get(2);
+        actionList = actionsByPositionMap.get(2);
         actionList.add(1); // 패스
         actionList.add(2); // 슈팅
 
@@ -140,6 +137,6 @@ public class MappingData {
         return positionByNumberMap.get(positionNumber);
     }
     public String getActionName(int actionNumber) {
-        return actionByNumberMap.get(actionNumber);
+        return actionsByNumberMap.get(actionNumber);
     }
 }
