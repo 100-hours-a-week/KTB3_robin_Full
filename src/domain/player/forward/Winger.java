@@ -1,9 +1,12 @@
 package domain.player.forward;
 
+import domain.player.Position;
+
 public class Winger extends Forward {
-    public Winger(String name, String teamName) {
+    public Winger(String name, String teamName, Position position) {
         this.name = name;
         this.teamName = teamName;
+        this.position = position;
         this.pac = 60;
         this.sho = 65;
         this.pas = 60;

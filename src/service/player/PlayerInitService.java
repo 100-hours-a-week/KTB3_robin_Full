@@ -37,19 +37,19 @@ public class PlayerInitService {
 
         switch (position) {
             case STIKER:
-                return new Striker(name, teamName);
+                return new Striker(name, teamName, position);
             case WINGER:
-                return new Winger(name, teamName);
+                return new Winger(name, teamName, position);
             case ATTACKING_MIDFIELDER:
-                return new AttackingMidFielder(name, teamName);
+                return new AttackingMidFielder(name, teamName, position);
             case CENTRAL_MIDFIELDER:
-                return new CentralMidFielder(name, teamName);
+                return new CentralMidFielder(name, teamName, position);
             case DEFENSIVE_MIDFIELDER:
-                return new DefensiveMidFielder(name, teamName);
+                return new DefensiveMidFielder(name, teamName, position);
             case FULLBACK:
-                return new FullBack(name, teamName);
+                return new FullBack(name, teamName, position);
             default: // CENTERBACK
-                return new CenterBack(name, teamName);
+                return new CenterBack(name, teamName, position);
         }
     }
 }

@@ -3,6 +3,7 @@ package domain.player;
 public class Player {
     protected String name; // 선수 이름
     protected String teamName; // 팀 이름
+    protected Position position;
 
     protected int pac = 60; // 속도
     protected int sho = 60; // 슈팅
@@ -16,6 +17,9 @@ public class Player {
     }
     public String getTeamName() {
         return teamName;
+    }
+    public Position getPosition() {
+        return position;
     }
     public int getPac() {
         return pac;

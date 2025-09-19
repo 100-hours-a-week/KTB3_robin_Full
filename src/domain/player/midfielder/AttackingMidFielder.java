@@ -1,9 +1,12 @@
 package domain.player.midfielder;
 
+import domain.player.Position;
+
 public class AttackingMidFielder extends MidFielder {
-    public AttackingMidFielder(String name, String teamName) {
+    public AttackingMidFielder(String name, String teamName, Position position) {
         this.name = name;
         this.teamName = teamName;
+        this.position = position;
         this.pac = 60;
         this.sho = 70;
         this.pas = 65;

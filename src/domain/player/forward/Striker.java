@@ -1,10 +1,13 @@
 package domain.player.forward;
 
+import domain.player.Position;
+
 public class Striker extends Forward {
 
-    public Striker(String name, String teamName) {
+    public Striker(String name, String teamName, Position position) {
         this.name = name;
         this.teamName = teamName;
+        this.position = position;
         this.pac = 60;
         this.sho = 70;
         this.pas = 60;
