@@ -6,6 +6,7 @@ import domain.player.Position;
 import domain.player.Team;
 import domain.validation.InputValidator;
 import domain.player.Player;
+import exception.InputIsNotValidNumberException;
 import service.MappingDataService;
 import service.RandomNumberService;
 import service.player.PlayerInitService;
@@ -59,22 +60,46 @@ public class GameManager {
 
         outView.printWelcomeMessage();
 
+        // 이름 입력
+        String name;
+        while(true) {
+            outView.printGetNameMessage();
+            name = inView.getPlayerName();
+            if (!inputValidator.nameValidator(name)) {
+                continue; // 재입력
+            }
+            break;
+        }
         outView.printGetNameMessage();
-        String name = inView.getPlayerName();
-        if (!inputValidator.nameValidator(name)) {
-            return false;
+
+        // 팀 번호 입력
+        int teamNumber;
+        while(true) {
+            outView.printGetTeamNumber();
+            try {
+                teamNumber = inView.getTeamNumber();
+                if (!inputValidator.teamValidator(teamNumber)) {
+                    continue; // 재입력
+                }
+                break;
+            } catch (InputIsNotValidNumberException e) {
+                System.out.println(e.getMessage());
+            }
         }
 
-        outView.printGetTeamNumber();
-        int teamNumber = inView.getTeamNumber();
-        if (!inputValidator.teamValidator(teamNumber)) {
-            return false;
-        }
-
-        outView.printGetPosition();
-        int positionNumber = inView.getPositionNumber();
-        if (!inputValidator.positionValidator(positionNumber)) {
-            return false;
+        // 포지션 번호 입력
+        int positionNumber;
+        while(true) {
+            outView.printGetPosition();
+            try {
+                positionNumber = inView.getPositionNumber();
+                if (!inputValidator.positionValidator(positionNumber)) {
+                    continue; // 재입력
+                }
+                break;
+            } catch (InputIsNotValidNumberException e) {
+                System.out.println(e.getMessage());
+            }
         }
 
         Team team = mappingDataService.getTeamEnumValue(teamNumber);
@@ -107,7 +132,6 @@ public class GameManager {
             // 각 역할군에 맞게 할 수 있는 행동들 나열
             availableActionNumbers = playerActionService.getAvailableActionNumbers(player.getPosition(), situationNumber);
             // 행동의 결과를 결과표에 기록
-            outView.printAvailableActions(availableActionNumbers, mappingDataService);
             handleActionInputLoop(availableActionNumbers, inputValidator, mappingDataService, playerActionService);
         }
     }
@@ -124,8 +148,15 @@ public class GameManager {
                                        MappingDataService mappingDataService,
                                        PlayerActionService playerActionService) {
         while (true) {
+            outView.printAvailableActions(availableActionNumbers, mappingDataService);
             System.out.print(GameMessages.askActionNumber);
-            int chosenNumber = inView.getActionToTake();
+            int chosenNumber;
+            try  {
+                chosenNumber = inView.getActionToTake();
+            } catch (InputIsNotValidNumberException e) {
+                System.out.println(e.getMessage());
+                continue; // 재입력
+            }
 
             if (inputValidator.actionValidator(chosenNumber, availableActionNumbers)) {
                 int result = playerActionService.execute(player, chosenNumber);
