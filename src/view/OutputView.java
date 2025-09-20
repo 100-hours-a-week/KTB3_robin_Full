@@ -41,6 +41,16 @@ public class OutputView {
         }
     }
 
+    // 현재 경기시간 출력
+    public void printCurrentTime(int clockTime) {
+        sb.append("현재 ")
+                .append(clockTime)
+                .append(" 분이 흘렀습니다.");
+
+        System.out.println(sb);
+        sb.setLength(0);
+    }
+
     public void printOneVoneChanceSituation(String name, String teamName) {
         sb.append(teamName)
             .append("의 ")
