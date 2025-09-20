@@ -26,6 +26,7 @@ public class GameManager {
     private final PlayerInitService playerInitService;
     private final PlayerActionService playerActionService;
     private final RandomNumberService randomNumberService;
+    private final MatchClock matchClock;
 
     private Player player;
 
@@ -36,7 +37,8 @@ public class GameManager {
         MappingDataService mappingDataService,
         PlayerInitService playerInitService,
         PlayerActionService playerActionService,
-        RandomNumberService randomNumberService) {
+        RandomNumberService randomNumberService,
+        MatchClock matchClock) {
 
         this.inView = inView;
         this.outView = outView;
@@ -45,18 +47,19 @@ public class GameManager {
         this.playerInitService = playerInitService;
         this.playerActionService = playerActionService;
         this.randomNumberService = randomNumberService;
+        this.matchClock = matchClock;
     }
 
     public void startGame() {
-        if (!initPlayer()) {
-            return;
-        }
+        initPlayer();
+        Thread matchClockThread = new Thread(matchClock);
+        matchClockThread.start();
         startMatch();
         printResult();
     }
 
     // 선수 등록 및 초기화 (이름, 구단, 포지션, 능력치)
-    private boolean initPlayer() {
+    private void initPlayer() {
 
         outView.printWelcomeMessage();
 
@@ -70,7 +73,6 @@ public class GameManager {
             }
             break;
         }
-        outView.printGetNameMessage();
 
         // 팀 번호 입력
         int teamNumber;
@@ -106,28 +108,34 @@ public class GameManager {
         Position position = mappingDataService.getPositionEnumValue(positionNumber);
         player = playerInitService.playerInit(name, team, position);
         outView.printBeforeMatch(player.getName(), player.getTeamName());
-        return true;
     }
 
     // 게임 진행
     private void startMatch() {
 
-        for (int i = 0; i < 4; i++) {
+        while(true) {
+            boolean isRunning = matchClock.getIsRunning();
+            if(!isRunning) {
+                break;
+            }
+            outView.printCurrentTime(matchClock.getClockTime());
+
             int situationNumber = randomNumberService.oneToFour(); // 게임 상황 4 가지를 숫자로 리턴
             ArrayList<Integer> availableActionNumbers;
-
+            String playerName = player.getName();
+            String teamName = player.getTeamName();
             switch (situationNumber) { // number 에 맞게 상황 설명을 view 에서 출력
                 case 1:
-                    outView.printOneVoneChanceSituation(player.getName(), player.getTeamName());
+                    outView.printOneVoneChanceSituation(playerName, teamName);
                     break;
                 case 2:
-                    outView.printNearByBoxSituation(player.getName(), player.getTeamName());
+                    outView.printNearByBoxSituation(playerName, teamName);
                     break;
                 case 3:
-                    outView.printCounterattackSituation(player.getName(), player.getTeamName());
+                    outView.printCounterattackSituation(playerName, teamName);
                     break;
                 default:
-                    outView.printDefendSituation(player.getName(), player.getTeamName());
+                    outView.printDefendSituation(playerName, teamName);
             }
             // 각 역할군에 맞게 할 수 있는 행동들 나열
             availableActionNumbers = playerActionService.getAvailableActionNumbers(player.getPosition(), situationNumber);
