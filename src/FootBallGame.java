@@ -1,4 +1,5 @@
 import domain.game.GameManager;
+import domain.game.MatchClock;
 import domain.validation.InputValidator;
 import service.MappingDataService;
 import service.RandomNumberService;
@@ -9,15 +10,16 @@ import view.OutputView;
 
 public class FootBallGame {
     public static void main(String[] args) {
-        GameManager gm = new GameManager(
-            new InputView(),
-            new OutputView(),
-            new InputValidator(),
-            new MappingDataService(),
-            new PlayerInitService(),
-            new PlayerActionService(new MappingDataService()),
-            new RandomNumberService()
-        );
+        InputView inputView = new InputView();
+        OutputView outputView = new OutputView();
+        InputValidator inputValidator = new InputValidator();
+        MappingDataService mappingDataService = new MappingDataService();
+        PlayerInitService playerInitService = new PlayerInitService();
+        PlayerActionService playerActionService = new PlayerActionService(mappingDataService);
+        RandomNumberService randomNumberService = new RandomNumberService();
+        MatchClock matchClock = new MatchClock();
+
+        GameManager gm = new GameManager(inputView, outputView, inputValidator, mappingDataService, playerInitService, playerActionService, randomNumberService, matchClock);
         gm.startGame();
     }
 }
