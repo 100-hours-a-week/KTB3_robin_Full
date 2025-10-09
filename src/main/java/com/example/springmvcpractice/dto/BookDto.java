@@ -1,14 +1,14 @@
 package com.example.springmvcpractice.dto;
 
 public class BookDto {
-    Long id;
-    String title;
-    String author;
-    String description;
-    String isbn;
+    private Long id;
+    private String title;
+    private String author;
+    private String description;
+    private String isbn;
 
     BookDto() {}
-    BookDto(Long id, String title, String author, String description, String isbn) {
+    public BookDto(Long id, String title, String author, String description, String isbn) {
         this.id = id;
         this.title = title;
         this.author = author;
