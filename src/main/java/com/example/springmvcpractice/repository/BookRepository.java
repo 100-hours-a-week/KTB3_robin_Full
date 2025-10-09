@@ -3,9 +3,7 @@ package com.example.springmvcpractice.repository;
 import com.example.springmvcpractice.dto.BookDto;
 import org.springframework.stereotype.Repository;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class BookRepository {
@@ -26,5 +24,13 @@ public class BookRepository {
 
     Optional<BookDto> findById(Long id) {
         return Optional.ofNullable(bookMap.get(id));
+    }
+
+    List<BookDto> findAll() {
+        List<BookDto> bookList = new ArrayList<>();
+        for (int i = 0; i < sequence; i++) {
+            bookList.add(bookMap.get(i));
+        }
+        return bookList;
     }
 }
