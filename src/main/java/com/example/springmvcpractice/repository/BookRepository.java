@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class BookRepository {
@@ -21,5 +22,9 @@ public class BookRepository {
         Long bookId = book.getId();
         bookMap.put(bookId, book);
         return bookMap.get(bookId);
+    }
+
+    Optional<BookDto> findById(Long id) {
+        return Optional.ofNullable(bookMap.get(id));
     }
 }
