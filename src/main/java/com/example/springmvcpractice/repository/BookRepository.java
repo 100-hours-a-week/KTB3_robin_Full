@@ -20,6 +20,7 @@ public class BookRepository {
         Long bookId = book.getId();
         if(bookId == null) {
             bookId = ++sequence;
+            book.setId(bookId);
         }
         bookMap.put(bookId, book);
         return bookMap.get(bookId);
@@ -30,10 +31,6 @@ public class BookRepository {
     }
 
     List<BookDto> findAll() {
-        List<BookDto> bookList = new ArrayList<>();
-        for (int i = 0; i < sequence; i++) {
-            bookList.add(bookMap.get(i));
-        }
-        return bookList;
+        return new ArrayList<>(bookMap.values());
     }
 }
