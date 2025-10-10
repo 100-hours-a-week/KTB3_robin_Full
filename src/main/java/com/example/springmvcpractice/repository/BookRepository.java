@@ -16,7 +16,7 @@ public class BookRepository {
         save(new BookDto(null, "Effective Java", "Joshua Bloch", "자바 개발자를 위한 베스트 프랙티스 모음집입니다.", "9780134685991"));
     }
 
-    BookDto save(BookDto book) {
+    public BookDto save(BookDto book) {
         Long bookId = book.getId();
         if(bookId == null) {
             bookId = ++sequence;
@@ -26,11 +26,11 @@ public class BookRepository {
         return bookMap.get(bookId);
     }
 
-    Optional<BookDto> findById(Long id) {
+    public Optional<BookDto> findById(Long id) {
         return Optional.ofNullable(bookMap.get(id));
     }
 
-    List<BookDto> findAll() {
+    public List<BookDto> findAll() {
         return new ArrayList<>(bookMap.values());
     }
 }
