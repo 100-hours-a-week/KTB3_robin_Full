@@ -12,7 +12,7 @@ import java.util.List;
 public class BookService {
     private final BookRepository bookRepository;
 
-    BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
 
