@@ -2,7 +2,9 @@ package com.example.springmvcpractice.service;
 
 import com.example.springmvcpractice.dto.BookDto;
 import com.example.springmvcpractice.repository.BookRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -19,5 +21,11 @@ public class BookService {
         List<BookDto> bookList = bookRepository.findAll();
         bookList.sort((o1, o2) -> (int) (o1.getId() - o2.getId()));
         return bookList;
+    }
+
+    // 도서를 조회 : 존재하지 않을 경우 404로 응답
+    public BookDto getBookById(Long id) {
+        return bookRepository.findById(id).
+                orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "도서를 찾을 수 없습니다. id : " + id));
     }
 }
