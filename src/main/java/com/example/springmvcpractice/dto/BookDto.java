@@ -7,7 +7,7 @@ public class BookDto {
     private String description;
     private String isbn;
 
-    BookDto() {}
+    public BookDto() {}
     public BookDto(Long id, String title, String author, String description, String isbn) {
         this.id = id;
         this.title = title;

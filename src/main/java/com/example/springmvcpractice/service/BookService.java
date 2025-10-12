@@ -28,4 +28,9 @@ public class BookService {
         return bookRepository.findById(id).
                 orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "도서를 찾을 수 없습니다. id : " + id));
     }
+
+    // 도서를 생성
+    public BookDto createBook(BookDto bto) {
+        return bookRepository.save(bto);
+    }
 }
