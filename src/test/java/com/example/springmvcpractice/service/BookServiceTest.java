@@ -1,5 +1,6 @@
 package com.example.springmvcpractice.service;
 
+import com.example.springmvcpractice.dto.BookDto;
 import com.example.springmvcpractice.repository.BookRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -52,6 +53,24 @@ public class BookServiceTest {
         // then : 404 상태 코드 검증 + 상호작용 검증
         assertEquals(HttpStatus.NOT_FOUND.value(), exception.getStatusCode().value(), "404 상태여야 합니다.");
         verify(mockRepo).findById(4L);
+        verifyNoMoreInteractions(mockRepo);
+    }
+
+    @Test
+    @DisplayName("BookService.createBook 메소드가 존재한다")
+    void createBookMethodPresent() {
+        // given
+        BookRepository mockRepo = mock(BookRepository.class);
+        BookService bookService = new BookService(mockRepo);
+
+        BookDto inputDto = new BookDto(null, "테스트도서 123", "테스트작가1", "테스트설명입니다.", "T934134451");
+        when(mockRepo.save(inputDto)).thenReturn(inputDto);
+
+        // when : 서비스 메소드 실제 호출
+        bookService.createBook(inputDto);
+
+        // then : createBook 메소드가 존재한다면, mockRepo.save를 한 번 호출함
+        verify(mockRepo).save(inputDto);
         verifyNoMoreInteractions(mockRepo);
     }
 }
