@@ -59,10 +59,14 @@ public class BookRepositoryTest {
         int mapSize = bookMap.size();
 
         // 추가
-        bookRepository.save(testDto);
+        BookDto saved = bookRepository.save(testDto);
 
         // 요소 하나가 정상적으로 들어갔는지 검증
         assertEquals(mapSize + 1, bookMap.size(), "새로운 요소를 저장하면 Map 이 저장하는 엔트리 개수가 하나 추가되어야 합니다.");
+        // 생성된 도서에 id 가 부여됐는지 검증
+        assertNotNull(saved.getId());
+        // 생성된 도서가 save 메소드에 넘긴 dto 와 동일한 dto 인지 검증
+        assertSame(testDto, saved);
     }
 
     @Test

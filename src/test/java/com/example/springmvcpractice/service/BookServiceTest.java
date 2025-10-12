@@ -73,4 +73,23 @@ public class BookServiceTest {
         verify(mockRepo).save(inputDto);
         verifyNoMoreInteractions(mockRepo);
     }
+
+    @Test
+    @DisplayName("서비스를 통해 도서를 생성하면 리포지토리가 ID 를 부여한다")
+    void createBookReturnsBookWithValidId() {
+        BookRepository mockRepo = mock(BookRepository.class);
+        BookService service = new BookService(mockRepo);
+
+        BookDto input = new BookDto(null, "제목", "저자", "설명", "isbn");
+        BookDto saved = new BookDto(4L, "제목", "저자", "설명", "isbn"); // 리포지토리가 반환해줄 결과
+
+        when(mockRepo.save(input)).thenReturn(saved);
+
+        BookDto result = service.createBook(input);
+
+        assertNotNull(result.getId(), "서비스는 ID가 채워진 결과를 반환해야 합니다.");
+        assertEquals(4L, result.getId());
+        verify(mockRepo).save(input);
+        verifyNoMoreInteractions(mockRepo);
+    }
 }
